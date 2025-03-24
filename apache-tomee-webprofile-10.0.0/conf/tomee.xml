@@ -20,4 +20,11 @@
 
   <!-- activate next line to be able to deploy applications in apps -->
   <!-- <Deployments dir="apps" /> -->
+  <Resource id="cinema" type="DataSource">
+    JdbcDriver  = com.mysql.cj.jdbc.Driver
+    JdbcUrl     = jdbc:mysql://localhost:3306/cinema
+    UserName    = root
+    Password    = 123
+    JtaManaged  = true
+  </Resource>
 </tomee>
