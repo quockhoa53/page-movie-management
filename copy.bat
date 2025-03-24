@@ -1,0 +1,3 @@
+@echo off
+echo Building project...
+copy /Y "movie-management\target\HelloEJB-1.0-SNAPSHOT.war" "apache-tomee-webprofile-10.0.0\webapps\HelloEJB.war"
