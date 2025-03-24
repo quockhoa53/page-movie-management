@@ -1,7 +1,7 @@
 @echo off
 
 echo Building project...
-cd movie-management
+cd ..
 mvn clean package 
 
 
