@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Sửa phim</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <h1>Sửa phim</h1>

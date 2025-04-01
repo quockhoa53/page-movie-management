@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Thêm phim mới</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <h1>Thêm phim mới</h1>

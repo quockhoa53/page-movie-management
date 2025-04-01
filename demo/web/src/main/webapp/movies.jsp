@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Quản lý danh sách phim</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <h1>Danh sách phim</h1>

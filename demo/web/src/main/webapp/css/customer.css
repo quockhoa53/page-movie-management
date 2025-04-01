@@ -1,0 +1,123 @@
+/* Cấu trúc chung */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+}
+
+/* Sidebar */
+.page-wrapper {
+    width: 250px; /* Sidebar với chiều rộng cố định */
+    background-color: #333; /* Màu nền của sidebar */
+    color: white;
+    padding: 20px;
+    height: 100vh; /* Chiều cao bằng chiều cao của màn hình */
+    position: fixed; /* Giữ sidebar cố định */
+}
+
+/* Phần chính (bao gồm header và danh sách khách hàng) */
+.main-content {
+    margin-left: 250px; /* Dành không gian cho sidebar */
+    flex: 1;
+    padding: 20px;
+}
+
+/* Container chính */
+.container {
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+/* Tiêu đề */
+header {
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #007bff;
+}
+
+/* Tìm kiếm */
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    padding: 10px;
+    width: 60%;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.search-container button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.search-container button:hover {
+    background-color: #0056b3;
+}
+
+/* Cấu trúc bảng */
+.customer-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.customer-table th, .customer-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.customer-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.customer-table td button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.customer-table .btn-info {
+    background-color: #007bff;
+    color: white;
+}
+
+.customer-table .btn-info:hover {
+    background-color: #0056b3;
+}
+
+.customer-table .btn-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
+.customer-table .btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.customer-table .btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.customer-table .btn-danger:hover {
+    background-color: #c82333;
+}
