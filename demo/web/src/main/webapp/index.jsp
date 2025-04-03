@@ -58,7 +58,7 @@
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://localhost:9999/DoAnWebCinema/admin/order.htm?filter=today" aria-expanded="false">
+          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://localhost:8080/myapp/tickets" aria-expanded="false">
             <i class="fa-solid fa-bookmark"></i>
             <span class="hide-menu">Booked Tickets</span>
           </a>

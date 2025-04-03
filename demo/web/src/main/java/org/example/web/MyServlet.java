@@ -52,11 +52,11 @@
 //        String action = req.getParameter("action");
 //        Movie movie = new Movie();
 //        movie.setMovieName(req.getParameter("movieName"));
-//        movie.setCountryOfProduction(req.getParameter("country"));
+//        movie.setCountry(req.getParameter("country"));
 //        movie.setDescription(req.getParameter("description"));
 //        movie.setDuration(Integer.parseInt(req.getParameter("duration")));
 //        movie.setReleaseDate(LocalDateTime.parse(req.getParameter("releaseDate"), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
-//        movie.setStatus(Integer.parseInt(req.getParameter("status")));
+////        movie.set(Integer.parseInt(req.getParameter("status")));
 //
 //        if (action.equals("add")) {
 //            myEJB.addMovie(movie);

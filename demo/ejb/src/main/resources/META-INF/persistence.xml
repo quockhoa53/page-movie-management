@@ -5,6 +5,14 @@
     <persistence-unit name="cinema" transaction-type="JTA">
         <jta-data-source>cinema</jta-data-source>
         <class>org.example.ejb.entity.Movie</class>
+        <class>org.example.ejb.entity.Ticket</class>
+        <class>org.example.ejb.entity.MovieRole</class>
+        <class>org.example.ejb.entity.Genre</class>
+        <class>org.example.ejb.entity.MovieGenre</class>
+        <class>org.example.ejb.entity.PriceChangeDetail</class>
+        <class>org.example.ejb.entity.MovieReview</class>
+        <class>org.example.ejb.entity.Employee</class>
+        <class>org.example.ejb.entity.Showtime</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>

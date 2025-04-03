@@ -1,7 +1,8 @@
 package org.example.ejb.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -22,7 +23,7 @@ public class Movie {
     private String country;
 
     @Column(name = "release_date")
-    private Date releaseDate;
+    private LocalDateTime releaseDate;
 
     @Column(name = "production_year")
     private Integer productionYear;
@@ -82,11 +83,11 @@ public class Movie {
         this.country = country;
     }
 
-    public Date getReleaseDate() {
+    public LocalDateTime getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(LocalDateTime releaseDate) {
         this.releaseDate = releaseDate;
     }
 
