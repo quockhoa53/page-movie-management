@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+    <persistence-unit name="cinema" transaction-type="JTA">
+        <jta-data-source>cinema</jta-data-source>
+        <class>org.example.ejb.entity.Movie</class>
+        <class>org.example.ejb.entity.Ticket</class>
+        <class>org.example.ejb.entity.MovieRole</class>
+        <class>org.example.ejb.entity.Genre</class>
+        <class>org.example.ejb.entity.MovieGenre</class>
+        <class>org.example.ejb.entity.PriceChangeDetail</class>
+        <class>org.example.ejb.entity.MovieReview</class>
+        <class>org.example.ejb.entity.Employee</class>
+        <class>org.example.ejb.entity.Showtime</class>
+        <class>org.example.ejb.entity.Room</class>
+        <class>org.example.ejb.entity.SeatRoomDetail</class>
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+    </persistence-unit>
+</persistence>

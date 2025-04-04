@@ -1,0 +1,193 @@
+.search-container, .filter-container {
+    position: relative;
+    width: 300px;
+}
+.search-container input, .filter-container input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border-radius: 25px;
+    border: 1px solid #ced4da;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease; }
+.search-container input:focus, .filter-container input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+    outline: none;
+}
+.search-container::before {
+    font-family: "Font Awesome 6 Free";
+    content: "\f002";
+    font-weight: 900;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+.add-btn {
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+}
+/* Modal Background */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Modal Content */
+.modal-dialog {
+    max-width: 800px;
+    margin: 1.75rem auto;
+}
+
+.modal-content {
+    border-radius: 8px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+}
+
+/* Modal Header */
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.5;
+}
+
+.modal-body .row {
+    margin-top: 1.5rem;
+}
+
+.modal-body .info-box {
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.modal-body .info-box .label {
+    font-weight: 600;
+    color: #555;
+}
+
+.modal-body .info-detail {
+    font-size: 1rem;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 1rem 2rem;
+    border-top: 1px solid #ddd;
+}
+
+/* Button Styling */
+.btn-close {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.button-fix-f {
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-fix-f:hover {
+    background-color: #0056b3;
+}
+
+/* Form Fields */
+.detail-info-fix {
+    margin-bottom: 1.5rem;
+}
+
+.detail-info-top-fix {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: 600;
+}
+
+.detail-info-buton-fix {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #555;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.detail-info-buton-fix:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Select & Date Input Styling */
+select, input[type="date"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-shadow: none;
+}
+
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.d-flex select {
+    width: 48%;
+}
+
+/* Modal Dialog Centering */
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 3rem);
+}
+
+/* Modal info-boxes */
+.info-box {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+}
+
+.info-box .label {
+    font-size: 1rem;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.info-box .info-detail {
+    font-size: 1rem;
+    color: #555;
+    font-weight: 400;
+}
