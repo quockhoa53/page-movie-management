@@ -1,115 +1,16 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Quản lý Khách Hàng</title>
+    <title>Customer Management</title>
     <link rel="stylesheet" href="css/customer.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/showtime.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Modal Overlay */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 10% auto;
-            padding: 30px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 600px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease-in-out;
-        }
-
-        .modal-header, .modal-footer {
-            text-align: center;
-            padding-bottom: 10px;
-        }
-
-        .modal-header h2 {
-            margin: 0;
-            color: #007bff;
-            font-size: 1.8rem;
-        }
-
-        .modal-close {
-            color: #aaa;
-            float: right;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .modal-close:hover,
-        .modal-close:focus {
-            color: #000;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .form-group label {
-            font-weight: bold;
-        }
-
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            height: 120px;
-        }
-
-        .modal-footer button {
-            padding: 12px 20px;
-            font-size: 1rem;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .modal-footer button:hover {
-            opacity: 0.8;
-        }
-
-        .btn-info {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .btn-warning {
-            background-color: #ffc107;
-            color: black;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .modal-content {
-                width: 90%;
-                margin: 20% auto;
-            }
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="page-wrapper">
@@ -118,146 +19,186 @@
 </div>
 <div class="main-content">
     <div class="container">
-        <header>
-            <h1>Quản lý Khách Hàng</h1>
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Customer Management</h1>
+            <button class="btn btn-primary add-btn" onclick="addCustomer()">
+                <i class="fas fa-plus me-2"></i>Add New
+            </button>
         </header>
 
-        <div class="search-container">
-            <input type="text" placeholder="Tìm kiếm khách hàng..." id="searchInput">
-            <button class="btn btn-primary" onclick="addCustomer()">Thêm Mới</button>
+        <div class="d-flex justify-content-between mb-4">
+            <div class="search-container">
+                <input type="text" placeholder="Search Customer..." id="searchInput" onkeyup="searchCustomers()">
+            </div>
         </div>
-
         <table class="customer-table">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Tên</th>
+                <th>Image</th>
+                <th>Customer Name</th>
                 <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Hành động</th>
+                <th>Phone</th>
+                <th>Actions</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>1</td>
-                <td>Nguyễn Văn A</td>
-                <td>a@example.com</td>
-                <td>0123456789</td>
-                <td>
-                    <button class="btn btn-info" onclick="viewCustomer(1)"><i class="fas fa-eye"></i> Xem</button>
-                    <button class="btn btn-warning" onclick="editCustomer(1)"><i class="fas fa-edit"></i> Sửa</button>
-                    <button class="btn btn-danger" onclick="deleteCustomer(1)"><i class="fas fa-trash"></i> Xóa</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Trần Thị B</td>
-                <td>b@example.com</td>
-                <td>0987654321</td>
-                <td>
-                    <button class="btn btn-info" onclick="viewCustomer(2)"><i class="fas fa-eye"></i> Xem</button>
-                    <button class="btn btn-warning" onclick="editCustomer(2)"><i class="fas fa-edit"></i> Sửa</button>
-                    <button class="btn btn-danger" onclick="deleteCustomer(2)"><i class="fas fa-trash"></i> Xóa</button>
-                </td>
-            </tr>
+            <tbody id="customerTableBody">
+            <c:forEach var="customer" items="${customers}">
+                <tr>
+                    <td>${customer.customerId}</td>
+                    <td>${""}</td>
+                    <td>${customer.customerName}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.phone}</td>
+                    <td>
+                        <button class="btn btn-info" onclick="viewCustomer(${customer.customerId})"><i class="fas fa-eye"></i> View</button>
+                        <button class="btn btn-warning" onclick="editCustomer(${customer.customerId})"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn btn-danger" onclick="deleteCustomer(${customer.customerId})"><i class="fas fa-trash"></i> Delete</button>
+                    </td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
     </div>
 </div>
 
-<!-- Modal Xem Chi Tiết -->
+<!-- Modal View Customer -->
 <div id="viewModal" class="modal">
     <div class="modal-content">
         <span class="modal-close" onclick="closeModal('viewModal')">&times;</span>
         <div class="modal-header">
-            <h2>Chi Tiết Khách Hàng</h2>
+            <h2>Customer Details</h2>
         </div>
         <div class="modal-body">
-            <p><strong>Tên:</strong> <span id="viewCustomerName"></span></p>
+            <p><strong>Name:</strong> <span id="viewCustomerName"></span></p>
             <p><strong>Email:</strong> <span id="viewCustomerEmail"></span></p>
-            <p><strong>Số điện thoại:</strong> <span id="viewCustomerPhone"></span></p>
+            <p><strong>Phone:</strong> <span id="viewCustomerPhone"></span></p>
+            <p><strong>Birth Date:</strong> <span id="viewCustomerBirthDate"></span></p>
+            <p><strong>Address:</strong> <span id="viewCustomerAddress"></span></p>
+            <p><strong>Gender:</strong> <span id="viewCustomerGender"></span></p>
+            <p><strong>Avatar:</strong> <img id="viewCustomerAvatar" src="https://th.bing.com/th/id/OIP.q7_pzFdwpuQqAIE6YvSPXQHaIk?rs=1&pid=ImgDetMain" alt="Avatar" style="width: 100px; height: 100px;"></p>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('viewModal')">Đóng</button>
+            <button class="btn btn-secondary" onclick="closeModal('viewModal')">Close</button>
         </div>
     </div>
 </div>
 
-<!-- Modal Thêm Khách Hàng -->
+<!-- Modal Add Customer -->
 <div id="addModal" class="modal">
     <div class="modal-content">
         <span class="modal-close" onclick="closeModal('addModal')">&times;</span>
         <div class="modal-header">
-            <h2>Thêm Khách Hàng Mới</h2>
+            <h2>Add New Customer</h2>
         </div>
         <form id="addForm" class="modal-body">
             <div class="form-group">
-                <label for="customerName">Tên:</label>
-                <input type="text" id="customerName" required>
+                <label for="customerName">Name:</label>
+                <input type="text" id="customerName" name="customerName" required>
+            </div>
+            <div class="form-group">
+                <label for="birthDate">Birth Date:</label>
+                <input type="date" id="birthDate" name="birthDate" required>
+            </div>
+            <div class="form-group">
+                <label for="customerPhone">Phone:</label>
+                <input type="text" id="customerPhone" name="customerPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="customerAddress">Address:</label>
+                <input type="text" id="customerAddress" name="customerAddress" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="customerEmail">Email:</label>
-                <input type="email" id="customerEmail" required>
+                <input type="email" id="customerEmail" name="customerEmail" required>
             </div>
             <div class="form-group">
-                <label for="customerPhone">Số điện thoại:</label>
-                <input type="text" id="customerPhone" required>
+                <label for="avatar">Avatar:</label>
+                <input type="file" id="avatar" name="avatar" accept="image/*">
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-info">Thêm Khách Hàng</button>
-                <button type="button" class="btn btn-secondary" onclick="closeModal('addModal')">Hủy</button>
+                <button type="submit" class="btn btn-info">Add Customer</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('addModal')">Cancel</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Modal Sửa Khách Hàng -->
+<!-- Modal Edit Customer -->
 <div id="editModal" class="modal">
     <div class="modal-content">
         <span class="modal-close" onclick="closeModal('editModal')">&times;</span>
         <div class="modal-header">
-            <h2>Sửa Khách Hàng</h2>
+            <h2>Edit Customer</h2>
         </div>
         <form id="editForm" class="modal-body">
             <div class="form-group">
-                <label for="editCustomerName">Tên:</label>
-                <input type="text" id="editCustomerName" required>
+                <label for="editCustomerName">Name:</label>
+                <input type="text" id="editCustomerName" name="customerName" required>
+            </div>
+            <div class="form-group">
+                <label for="editBirthDate">Birth Date:</label>
+                <input type="date" id="editBirthDate" name="birthDate" required>
+            </div>
+            <div class="form-group">
+                <label for="editCustomerPhone">Phone:</label>
+                <input type="text" id="editCustomerPhone" name="customerPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="editCustomerAddress">Address:</label>
+                <input type="text" id="editCustomerAddress" name="customerAddress" required>
+            </div>
+            <div class="form-group">
+                <label for="editGender">Gender:</label>
+                <select id="editGender" name="gender" required>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="editCustomerEmail">Email:</label>
-                <input type="email" id="editCustomerEmail" required>
+                <input type="email" id="editCustomerEmail" name="customerEmail" required>
             </div>
             <div class="form-group">
-                <label for="editCustomerPhone">Số điện thoại:</label>
-                <input type="text" id="editCustomerPhone" required>
+                <label for="editAvatar">Avatar:</label>
+                <input type="file" id="editAvatar" name="avatar" accept="image/*">
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-warning">Cập Nhật</button>
-                <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')">Hủy</button>
+                <button type="submit" class="btn btn-warning">Update</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')">Cancel</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Modal Xóa Khách Hàng -->
+<!-- Modal Delete Customer -->
 <div id="deleteModal" class="modal">
     <div class="modal-content">
         <span class="modal-close" onclick="closeModal('deleteModal')">&times;</span>
         <div class="modal-header">
-            <h2>Xóa Khách Hàng</h2>
+            <h2>Delete Customer</h2>
         </div>
         <div class="modal-body">
-            <p>Bạn có chắc chắn muốn xóa khách hàng này không?</p>
+            <p>Are you sure you want to delete this customer?</p>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-danger" onclick="confirmDelete()">Xóa</button>
-            <button class="btn btn-secondary" onclick="closeModal('deleteModal')">Hủy</button>
+            <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+            <button class="btn btn-secondary" onclick="closeModal('deleteModal')">Cancel</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Mở và đóng modal
+    let userIdTmp = null;
+
+    // Open and close modal
     function openModal(modalId) {
         document.getElementById(modalId).style.display = "block";
     }
@@ -266,40 +207,131 @@
         document.getElementById(modalId).style.display = "none";
     }
 
-    // Hiển thị thông tin khách hàng khi xem
+    // View Customer details
     function viewCustomer(id) {
-        // Giả sử lấy thông tin khách hàng từ server hoặc mảng dữ liệu
-        document.getElementById('viewCustomerName').textContent = "Nguyễn Văn A";
-        document.getElementById('viewCustomerEmail').textContent = "a@example.com";
-        document.getElementById('viewCustomerPhone').textContent = "0123456789";
-        openModal('viewModal');
+        fetch('http://localhost:8080/myapp/customers?action=findUser&customerId=' + id, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('viewCustomerName').textContent = data.customerName;
+                document.getElementById('viewCustomerEmail').textContent = data.email;
+                document.getElementById('viewCustomerPhone').textContent = data.phone;
+                document.getElementById('viewCustomerAddress').textContent = data.address;
+                document.getElementById('viewCustomerBirthDate').textContent = data.birthDate;
+                document.getElementById('viewCustomerGender').textContent = data.gender ? "Male" : "Female";
+                openModal('viewModal');
+            })
+            .catch(error => {
+                console.error("Error fetching customer data:", error);
+                alert("Unable to load customer data.");
+            });
     }
 
-    // Thêm khách hàng mới
+    // Add new customer
     function addCustomer() {
         openModal('addModal');
     }
 
-    // Sửa khách hàng
+    // Edit customer
     function editCustomer(id) {
-        // Giả sử lấy thông tin khách hàng từ server hoặc mảng dữ liệu
-        document.getElementById('editCustomerName').value = "Nguyễn Văn A";
-        document.getElementById('editCustomerEmail').value = "a@example.com";
-        document.getElementById('editCustomerPhone').value = "0123456789";
-        openModal('editModal');
+        fetch('http://localhost:8080/myapp/customers?action=findUser&customerId=' + id, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                userIdTmp = id;
+                document.getElementById('editCustomerName').value = data.customerName;
+                document.getElementById('editCustomerEmail').value = data.email;
+                document.getElementById('editCustomerPhone').value = data.phone;
+                document.getElementById('editCustomerAddress').value = data.address;
+                const birthDate = new Date(data.birthDate);
+                const formattedDate = (birthDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                    birthDate.getDate().toString().padStart(2, '0') + '/' +
+                    birthDate.getFullYear();
+                document.getElementById('editBirthDate').value = formattedDate;
+                document.getElementById('editGender').value = data.gender ? "1" : "0";
+                openModal('editModal');
+            })
+            .catch(error => {
+                console.error("Error fetching customer data:", error);
+                alert("Unable to load customer data.");
+            });
     }
 
-    // Xóa khách hàng
+    // Handle form submit for edit
+    document.getElementById("editForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        let customerName = document.getElementById("editCustomerName").value;
+        let birthDate = document.getElementById("editBirthDate").value;
+        let customerPhone = document.getElementById("editCustomerPhone").value;
+        let customerAddress = document.getElementById("editCustomerAddress").value;
+        let gender = document.getElementById("editGender").value;
+        let customerEmail = document.getElementById("editCustomerEmail").value;
+
+        const formData = new FormData();
+        formData.append('customerId', userIdTmp);
+        formData.append('customerName', customerName);
+        formData.append('birthDate', birthDate);
+        formData.append('customerPhone', customerPhone);
+        formData.append('customerAddress', customerAddress);
+        formData.append('gender', gender);
+        formData.append('customerEmail', customerEmail);
+
+        fetch('http://localhost:8080/myapp/customers?action=update', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("Customer updated successfully");
+                closeModal('editModal');
+            })
+            .catch(error => {
+                console.error("Error updating customer:", error);
+                alert("Unable to update customer.");
+            });
+    });
+
+    // Delete customer
     function deleteCustomer(id) {
+        userIdTmp = id;
         openModal('deleteModal');
     }
 
+    // Confirm delete customer
     function confirmDelete() {
-        // Xử lý xóa khách hàng
-        alert("Khách hàng đã được xóa!");
-        closeModal('deleteModal');
+        fetch('http://localhost:8080/myapp/customers?action=delete&customerId=' + userIdTmp, {
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("Customer deleted successfully");
+                closeModal('deleteModal');
+            })
+            .catch(error => {
+                console.error("Error deleting customer:", error);
+                alert("Unable to delete customer.");
+            });
+    }
+
+    // Search functionality
+    function searchCustomers() {
+        const input = document.getElementById("searchInput");
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById("customerTableBody");
+        const rows = table.getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            const columns = rows[i].getElementsByTagName("td");
+            const customerName = columns[2] ? columns[2].textContent.toLowerCase() : "";
+            if (customerName.includes(filter)) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
     }
 </script>
-
 </body>
 </html>

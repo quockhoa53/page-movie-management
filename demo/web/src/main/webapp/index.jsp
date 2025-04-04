@@ -22,37 +22,31 @@
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="changepassword.jsp" aria-expanded="false">
-            <i class="fa-solid fa-arrows-rotate mr-10"></i>
-            <span class="hide-menu">Change Password</span>
-          </a>
-        </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="customer.jsp" aria-expanded="false">
+          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://localhost:8080/myapp/customers" aria-expanded="false">
             <i class="fa-solid fa-users"></i>
             <span class="hide-menu">Customers</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="movie.jsp" aria-expanded="false">
+          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://localhost:8080/myapp/movies" aria-expanded="false">
             <i class="fa-solid fa-film"></i>
             <span class="hide-menu">Movies</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="director.jsp" aria-expanded="false">
+          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://localhost:8080/myapp/directors" aria-expanded="false">
             <i class="fa-solid fa-clapperboard"></i>
             <span class="hide-menu">Directors</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="actor.jsp" aria-expanded="false">
+          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://localhost:8080/myapp/actors" aria-expanded="false">
             <i class="fa-solid fa-theater-masks"></i>
             <span class="hide-menu">Actors</span>
           </a>
         </li>
         <li class="sidebar-item">
-          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="typeseat.jsp" aria-expanded="false">
+          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://localhost:8080/myapp/typeseats" aria-expanded="false">
             <i class="fa-solid fa-ticket-simple"></i>
             <span class="hide-menu">Seat Types</span>
           </a>
@@ -79,12 +73,6 @@
           <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://localhost:8080/myapp/genres" aria-expanded="false">
             <i class="fa-solid fa-align-center"></i>
             <span class="hide-menu">Genres</span>
-          </a>
-        </li>
-        <li class="sidebar-item">
-          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="http://localhost:9999/DoAnWebCinema/login.htm" aria-expanded="false">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            <span class="hide-menu">Logout</span>
           </a>
         </li>
       </ul>

@@ -1,106 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
     <title>seat Type Management</title>
     <link rel="stylesheet" href="css/customer.css">
+    <link rel="stylesheet" href="css/showtime.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Modal Overlay */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 10% auto;
-            padding: 30px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 600px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease-in-out;
-        }
-
-        .modal-header, .modal-footer {
-            text-align: center;
-            padding-bottom: 10px;
-        }
-
-        .modal-header h2 {
-            margin: 0;
-            color: #007bff;
-            font-size: 1.8rem;
-        }
-
-        .modal-close {
-            color: #aaa;
-            float: right;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .modal-close:hover,
-        .modal-close:focus {
-            color: #000;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .form-group label {
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        .modal-footer button {
-            padding: 12px 20px;
-            font-size: 1rem;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .btn-info {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .btn-warning {
-            background-color: #ffc107;
-            color: black;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .modal-content {
-                width: 90%;
-                margin: 20% auto;
-            }
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="page-wrapper">
@@ -108,88 +16,153 @@
 </div>
 <div class="main-content">
     <div class="container">
-        <header>
-            <h1>Seat Type Management</h1>
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <h1>SeatType Management</h1>
+            <button class="btn btn-primary add-btn" data-bs-toggle="modal" data-bs-target="#addSeatTypeModal">
+                <i class="fas fa-plus me-2"></i>Add New
+            </button>
         </header>
 
-        <div class="search-container">
-            <input type="text" placeholder="Search seat types..." id="searchInput">
-            <button class="btn btn-primary" onclick="addseatType()">Add New</button>
+        <div class="d-flex justify-content-between mb-4">
+            <div class="search-container">
+                <input type="text" placeholder="Search seat types..." id="searchInput" onkeyup="searchShowtimes()">
+            </div>
         </div>
 
         <table class="customer-table">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>seat Type</th>
+                <th>Seat Type</th>
                 <th>Price</th>
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="showtimeTableBody">
+            <!-- Loop through SeatTypes and display them -->
+            <c:forEach var="seatType" items="${seatTypes}">
             <tr>
-                <td>1</td>
-                <td>Recliner</td>
-                <td>$200</td>
+                <td>${seatType.seatTypeId}</td>
+                <td>${seatType.typeName}</td>
+                <td>${seatType.price}</td>
                 <td>
-                    <button class="btn btn-info" onclick="viewseatType(1)"><i class="fas fa-eye"></i> View</button>
-                    <button class="btn btn-warning" onclick="editseatType(1)"><i class="fas fa-edit"></i> Edit</button>
-                    <button class="btn btn-danger" onclick="deleteseatType(1)"><i class="fas fa-trash"></i> Delete</button>
+                    <!-- View Modal Trigger -->
+                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewSeatTypeModal-${seatType.seatTypeId}">
+                        <i class="fas fa-eye"></i> View
+                    </button>
+                    <!-- Edit Modal Trigger -->
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editSeatTypeModal-${seatType.seatTypeId}">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <!-- Delete Action (Using GET for simplicity here) -->
+                    <form action="seatTypes" method="post" style="display:inline;">
+                        <input type="hidden" name="seatTypeId" value="${seatType.seatTypeId}">
+                        <input type="hidden" name="_method" value="delete">
+                        <button type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModals">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </form>
+
                 </td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Rocking seat</td>
-                <td>$150</td>
-                <td>
-                    <button class="btn btn-info" onclick="viewseatType(2)"><i class="fas fa-eye"></i> View</button>
-                    <button class="btn btn-warning" onclick="editseatType(2)"><i class="fas fa-edit"></i> Edit</button>
-                    <button class="btn btn-danger" onclick="deleteseatType(2)"><i class="fas fa-trash"></i> Delete</button>
-                </td>
-            </tr>
-            </tbody>
+
+            <!-- View Seat Type Modal -->
+            <div class="modal fade" id="viewSeatTypeModal-${seatType.seatTypeId}" tabindex="-1" aria-labelledby="viewSeatTypeModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="viewSeatTypeModalLabel">Seat Type Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Seat Type:</strong> ${seatType.typeName}</p>
+                            <p><strong>Price:</strong> $${seatType.price}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Seat Type Modal -->
+            <div class="modal fade" id="editSeatTypeModal-${seatType.seatTypeId}" tabindex="-1" aria-labelledby="editSeatTypeModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editSeatTypeModalLabel">Edit Seat Type</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="seatTypes" method="post">
+                                <input type="hidden" name="seatTypeId" value="${seatType.seatTypeId}">
+                                <input type="hidden" name="_method" value="put">
+                                <div class="form-group">
+                                    <label for="seatTypeName-${seatType.seatTypeId}">Seat Type Name:</label>
+                                    <input type="text" class="form-control" name="seatTypeName" value="${seatType.typeName}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="seatTypePrice-${seatType.seatTypeId}">Price:</label>
+                                    <input type="number" class="form-control" name="seatTypePrice" value="${seatType.price}" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-warning">Update</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </c:forEach>
         </table>
     </div>
 </div>
 
-<!-- View seat Type Modal -->
-<div id="viewseatTypeModal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeModal('viewseatTypeModal')">&times;</span>
-        <div class="modal-header">
-            <h2>seat Type Details</h2>
-        </div>
-        <div class="modal-body">
-            <p><strong>seat Type:</strong> <span id="viewseatTypeName"></span></p>
-            <p><strong>Price:</strong> $<span id="viewseatTypePrice"></span></p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('viewseatTypeModal')">Close</button>
+<!-- Add Seat Type Modal -->
+<div id="addSeatTypeModal" class="modal fade" tabindex="-1" aria-labelledby="addSeatTypeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSeatTypeModalLabel">Add New Seat Type</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="seatTypes" method="post">
+                    <div class="form-group">
+                        <label for="seatTypeName">Seat Type Name:</label>
+                        <input type="text" class="form-control" id="seatTypeName" name="seatTypeName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seatTypePrice">Price:</label>
+                        <input type="number" class="form-control" id="seatTypePrice" name="seatTypePrice" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info">Add</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Add seat Type Modal -->
-<div id="addseatTypeModal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeModal('addseatTypeModal')">&times;</span>
-        <div class="modal-header">
-            <h2>Add New seat Type</h2>
-        </div>
-        <form id="addseatTypeForm" class="modal-body">
-            <div class="form-group">
-                <label for="seatTypeName">seat Type Name:</label>
-                <input type="text" id="seatTypeName" required>
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="form-group">
-                <label for="seatTypePrice">Price:</label>
-                <input type="number" id="seatTypePrice" required>
+            <div class="modal-body">
+                Are you sure you want to delete this type seat?
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-info">Add</button>
-                <button type="button" class="btn btn-secondary" onclick="closeModal('addseatTypeModal')">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
@@ -202,29 +175,14 @@
         document.getElementById(modalId).style.display = "none";
     }
 
-    function viewseatType(id) {
-        if(id == 1) {
-            document.getElementById('viewseatTypeName').textContent = "Recliner";
-            document.getElementById('viewseatTypePrice').textContent = "200";
-        } else if(id == 2) {
-            document.getElementById('viewseatTypeName').textContent = "Rocking seat";
-            document.getElementById('viewseatTypePrice').textContent = "150";
-        }
-        openModal('viewseatTypeModal');
-    }
-
-    function addseatType() {
-        openModal('addseatTypeModal');
-    }
-
-    function editseatType(id) {
-        alert("Edit feature not yet implemented!");
-    }
-
-    function deleteseatType(id) {
-        if (confirm("Are you sure you want to delete this seat type?")) {
-            alert("seat type deleted successfully!");
-        }
+    function searchShowtimes() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const rows = document.getElementById('showtimeTableBody').getElementsByTagName('tr');
+        Array.from(rows).forEach(row => {
+            const cells = row.getElementsByTagName('td');
+            let matchFound = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(query));
+            row.style.display = matchFound ? '' : 'none';
+        });
     }
 </script>
 

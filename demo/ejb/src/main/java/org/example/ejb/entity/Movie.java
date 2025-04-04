@@ -3,6 +3,7 @@ package org.example.ejb.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -23,7 +24,7 @@ public class Movie {
     private String country;
 
     @Column(name = "release_date")
-    private LocalDateTime releaseDate;
+    private Date releaseDate;
 
     @Column(name = "production_year")
     private Integer productionYear;
@@ -39,6 +40,9 @@ public class Movie {
 
     @Column(name = "score")
     private Float score;
+
+    @Column(name = "status_id")
+    private int statusId;
 
     @ManyToOne
     @JoinColumn(name = "director_id", referencedColumnName = "director_id")
@@ -83,11 +87,11 @@ public class Movie {
         this.country = country;
     }
 
-    public LocalDateTime getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(LocalDateTime releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -153,6 +157,14 @@ public class Movie {
 
     public void setMovieGenres(Set<MovieGenre> movieGenres) {
         this.movieGenres = movieGenres;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 }
 

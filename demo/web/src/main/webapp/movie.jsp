@@ -1,115 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
-    <title>Quản lý Phim</title>
+    <title>Movie Management</title>
     <link rel="stylesheet" href="css/customer.css">
+    <link rel="stylesheet" href="css/showtime.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Modal Overlay */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 10% auto;
-            padding: 30px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 600px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease-in-out;
-        }
-
-        .modal-header, .modal-footer {
-            text-align: center;
-            padding-bottom: 10px;
-        }
-
-        .modal-header h2 {
-            margin: 0;
-            color: #007bff;
-            font-size: 1.8rem;
-        }
-
-        .modal-close {
-            color: #aaa;
-            float: right;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .modal-close:hover,
-        .modal-close:focus {
-            color: #000;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .form-group label {
-            font-weight: bold;
-        }
-
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            height: 120px;
-        }
-
-        .modal-footer button {
-            padding: 12px 20px;
-            font-size: 1rem;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .modal-footer button:hover {
-            opacity: 0.8;
-        }
-
-        .btn-info {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .btn-warning {
-            background-color: #ffc107;
-            color: black;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .modal-content {
-                width: 90%;
-                margin: 20% auto;
-            }
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="page-wrapper">
@@ -118,157 +17,253 @@
 </div>
 <div class="main-content">
     <div class="container">
-        <header>
-            <h1>Quản lý Phim</h1>
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Movie Management</h1>
+            <button class="btn btn-primary add-btn" data-bs-toggle="modal" data-bs-target="#addModal">
+                <i class="fas fa-plus me-2"></i>Add New Showtime
+            </button>
         </header>
 
-        <div class="search-container">
-            <input type="text" placeholder="Tìm kiếm phim..." id="searchInput">
-            <button class="btn btn-primary" onclick="addCustomer()">Thêm Mới</button>
+        <div class="d-flex justify-content-between mb-4">
+            <div class="search-container">
+                <input type="text" placeholder="Search movies..." id="searchInput" onkeyup="searchShowtimes()">
+            </div>
         </div>
 
         <table class="customer-table">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Tên phim</th>
-                <th>Quốc gia</th>
-                <th>Mô tả</th>
-                <th>Thời lượng</th>
-                <th>Ngày khởi chiếu</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
+                <th>Movie Name</th>
+                <th>Country</th>
+                <th>Production Year</th>
+                <th>Duration (minutes)</th>
+                <th>Release Date</th>
+                <th>Rating</th>
+                <th>Status</th>
+                <th>Action</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>1</td>
-                <td>Quỷ ăn tạng</td>
-                <td>Thái Lan</td>
-                <td>Tee yod, phim kinh dị của Thái Lan</td>
-                <td>180m</td>
-                <td>10-04-2025</td>
-                <td>Đang chiếu</td>
-                <td>
-                    <button class="btn btn-info" onclick="viewMovie(1)"><i class="fas fa-eye"></i> Xem</button>
-                    <button class="btn btn-warning" onclick="editMovie(1)"><i class="fas fa-edit"></i> Sửa</button>
-                    <button class="btn btn-danger" onclick="deleteMovie(1)"><i class="fas fa-trash"></i> Xóa</button>
-                </td>
-            </tr>
+            <tbody id="showtimeTableBody">
+            <c:forEach var="movie" items="${movies}">
+                <tr>
+                    <td>${movie.movieId}</td>
+                    <td>${movie.movieName}</td>
+                    <td>${movie.country}</td>
+                    <td>${movie.productionYear}</td>
+                    <td>${movie.duration}</td>
+                    <td><fmt:formatDate value="${movie.releaseDate}" pattern="yyyy-MM-dd"/></td>
+                    <td>${movie.score}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${movie.statusId == 0}">Not Released</c:when>
+                            <c:when test="${movie.statusId == 1}">Now Showing</c:when>
+                            <c:when test="${movie.statusId == 2}">No Longer Showing</c:when>
+                            <c:otherwise>Undefined</c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#info-${movie.movieId}"><i class="fas fa-eye"></i> View </button>
+                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit-${movie.movieId}"><i class="fas fa-edit"></i> Edit</button>
+                        <a href="${pageContext.request.contextPath}/movies?action=delete&id=${movie.movieId}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this movie?')"><i class="fas fa-trash"></i> Delete</a>
+                    </td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
     </div>
 </div>
 
-<!-- Modal Xem Chi Tiết -->
-<div id="viewModal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeModal('viewModal')">&times;</span>
-        <div class="modal-header">
-            <h2>Chi Tiết Phim</h2>
+<!-- View Movie Modal -->
+<c:forEach var="p" items="${movies}">
+    <div class="modal fade" id="info-${p.movieId}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header bg-primary text-white">
+                    <h4 class="modal-title">Movie Details</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- Image and Status -->
+                            <div class="col-md-4 text-center">
+                                <img src="${p.imageUrl}" alt="movie-poster" class="img-fluid rounded mb-3" width="200" height="250"/>
+                                <p><strong>Movie ID:</strong> ${p.movieId}</p>
+                                <p class="btn-f btn-solid-f">
+                                    <c:choose>
+                                        <c:when test="${p.statusId == 0}">Not Released</c:when>
+                                        <c:when test="${p.statusId == 1}">Now Showing</c:when>
+                                        <c:when test="${p.statusId == 2}">No Longer Showing</c:when>
+                                    </c:choose>
+                                </p>
+                            </div>
+                            <!-- Detailed Information -->
+                            <div class="col-md-8">
+                                <p><strong>Movie Name:</strong> ${p.movieName}</p>
+                                <p><strong>Description:</strong> ${p.description}</p>
+                                <p><strong>Country:</strong> ${p.country}</p>
+                                <p><strong>Production Year:</strong> ${p.productionYear}</p>
+                                <p><strong>Duration:</strong> ${p.duration} minutes</p>
+                                <p><strong>Release Date:</strong> <fmt:formatDate value="${p.releaseDate}" pattern="dd-MM-yyyy" /></p>
+                                <p><strong>Rating:</strong> ${p.score}</p>
+                                <p><strong>Director:</strong> ${p.director.directorName}</p>
+                                <p><strong>Trailer:</strong>
+                                    <c:if test="${not empty p.trailerUrl}">
+                                        <a href="${p.trailerUrl}" target="_blank">Watch Trailer</a>
+                                    </c:if>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <p><strong>Tên Phim:</strong> <span id="viewMovieName"></span></p>
-            <p><strong>Quốc Gia:</strong> <span id="viewCountry"></span></p>
-            <p><strong>Mô Tả:</strong> <span id="viewDescription"></span></p>
-            <p><strong>Thời Lượng:</strong> <span id="viewDuration"></span></p>
-            <p><strong>Ngày Khởi Chiếu:</strong> <span id="viewReleaseDate"></span></p>
-            <p><strong>Trạng Thái:</strong> <span id="viewStatus"></span></p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeModal('viewModal')">Đóng</button>
+    </div>
+</c:forEach>
+
+<!-- Add Movie Modal -->
+<div class="modal" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="${pageContext.request.contextPath}/movies" method="post">
+                <input type="hidden" name="action" value="add">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add New Movie</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="closeModal('addModal')" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="addMovieName">Movie Name:</label>
+                        <input type="text" id="addMovieName" name="movieName" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="addDescription">Description:</label>
+                        <textarea id="addDescription" name="description" required class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="addCountry">Country:</label>
+                        <input type="text" id="addCountry" name="country" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="addProductionYear">Production Year:</label>
+                        <input type="number" id="addProductionYear" name="productionYear" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="addDuration">Duration (minutes):</label>
+                        <input type="number" id="addDuration" name="duration" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="addReleaseDate">Release Date:</label>
+                        <input type="date" id="addReleaseDate" name="releaseDate" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="addScore">Rating:</label>
+                        <input type="number" step="0.1" id="addScore" name="score" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="addDirectorId">Director:</label>
+                        <input type="number" id="addDirectorId" name="directorId" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="addImageUrl">Image URL:</label>
+                        <input type="text" id="addImageUrl" name="imageUrl" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="addTrailerUrl">Trailer URL:</label>
+                        <input type="text" id="addTrailerUrl" name="trailerUrl" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="addStatusId">Status:</label>
+                        <select id="addStatusId" name="statusId" class="form-control">
+                            <option value="0">Not Released</option>
+                            <option value="1">Now Showing</option>
+                            <option value="2">No Longer Showing</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Add</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addModal')">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<!-- Modal Thêm Phim -->
-<div id="addModal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeModal('addModal')">&times;</span>
-        <div class="modal-header">
-            <h2>Thêm Phim Mới</h2>
-        </div>
-        <form id="addForm" class="modal-body">
-            <div class="form-group">
-                <label for="movieName">Tên Phim:</label>
-                <input type="text" id="movieName" required>
+<!-- Edit Movie Modal -->
+<c:forEach var="p" items="${movies}">
+    <div class="modal fade" id="edit-${p.movieId}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form action="${pageContext.request.contextPath}/movies" method="post">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="movieId" value="${p.movieId}">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Movie</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="movieName-${p.movieId}">Movie Name:</label>
+                            <input type="text" id="movieName-${p.movieId}" name="movieName" class="form-control" value="${p.movieName}">
+                        </div>
+                        <div class="form-group">
+                            <label for="description-${p.movieId}">Description:</label>
+                            <textarea id="description-${p.movieId}" name="description" class="form-control">${p.description}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="country-${p.movieId}">Country:</label>
+                            <input type="text" id="country-${p.movieId}" name="country" class="form-control" value="${p.country}">
+                        </div>
+                        <div class="form-group">
+                            <label for="productionYear-${p.movieId}">Production Year:</label>
+                            <input type="number" id="productionYear-${p.movieId}" name="productionYear" class="form-control" value="${p.productionYear}">
+                        </div>
+                        <div class="form-group">
+                            <label for="duration-${p.movieId}">Duration (minutes):</label>
+                            <input type="number" id="duration-${p.movieId}" name="duration" class="form-control" value="${p.duration}">
+                        </div>
+                        <div class="form-group">
+                            <label for="releaseDate-${p.movieId}">Release Date:</label>
+                            <input type="date" id="releaseDate-${p.movieId}" name="releaseDate" class="form-control" value="${p.releaseDate}">
+                        </div>
+                        <div class="form-group">
+                            <label for="score-${p.movieId}">Rating:</label>
+                            <input type="number" step="0.1" id="score-${p.movieId}" name="score" class="form-control" value="${p.score}">
+                        </div>
+                        <div class="form-group">
+                            <label for="directorId-${p.movieId}">Director:</label>
+                            <input type="number" id="directorId-${p.movieId}" name="directorId" class="form-control" value="${p.director.directorId}">
+                        </div>
+                        <div class="form-group">
+                            <label for="imageUrl-${p.movieId}">Image URL:</label>
+                            <input type="text" id="imageUrl-${p.movieId}" name="imageUrl" class="form-control" value="${p.imageUrl}">
+                        </div>
+                        <div class="form-group">
+                            <label for="trailerUrl-${p.movieId}">Trailer URL:</label>
+                            <input type="text" id="trailerUrl-${p.movieId}" name="trailerUrl" class="form-control" value="${p.trailerUrl}">
+                        </div>
+                        <div class="form-group">
+                            <label for="statusId-${p.movieId}">Status:</label>
+                            <select id="statusId-${p.movieId}" name="statusId" class="form-control">
+                                <option value="0" <c:if test="${p.statusId == 0}">selected</c:if>>Not Released</option>
+                                <option value="1" <c:if test="${p.statusId == 1}">selected</c:if>>Now Showing</option>
+                                <option value="2" <c:if test="${p.statusId == 2}">selected</c:if>>No Longer Showing</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="country">Quốc Gia:</label>
-                <input type="text" id="country" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Mô Tả:</label>
-                <textarea id="description" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="duration">Thời Lượng:</label>
-                <input type="text" id="duration" required>
-            </div>
-            <div class="form-group">
-                <label for="releaseDate">Ngày Khởi Chiếu:</label>
-                <input type="date" id="releaseDate" required>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-info">Thêm Phim</button>
-                <button type="button" class="btn btn-secondary" onclick="closeModal('addModal')">Hủy</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Modal Sửa Phim -->
-<div id="editModal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeModal('editModal')">&times;</span>
-        <div class="modal-header">
-            <h2>Sửa Phim</h2>
-        </div>
-        <form id="editForm" class="modal-body">
-            <div class="form-group">
-                <label for="editMovieName">Tên Phim:</label>
-                <input type="text" id="editMovieName" required>
-            </div>
-            <div class="form-group">
-                <label for="editCountry">Quốc Gia:</label>
-                <input type="text" id="editCountry" required>
-            </div>
-            <div class="form-group">
-                <label for="editDescription">Mô Tả:</label>
-                <textarea id="editDescription" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="editDuration">Thời Lượng:</label>
-                <input type="text" id="editDuration" required>
-            </div>
-            <div class="form-group">
-                <label for="editReleaseDate">Ngày Khởi Chiếu:</label>
-                <input type="date" id="editReleaseDate" required>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-warning">Cập Nhật</button>
-                <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')">Hủy</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Modal Xóa Phim -->
-<div id="deleteModal" class="modal">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeModal('deleteModal')">&times;</span>
-        <div class="modal-header">
-            <h2>Xóa Phim</h2>
-        </div>
-        <div class="modal-body">
-            <p>Bạn có chắc chắn muốn xóa phim này không?</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger" onclick="confirmDelete()">Xóa</button>
-            <button class="btn btn-secondary" onclick="closeModal('deleteModal')">Hủy</button>
         </div>
     </div>
-</div>
+</c:forEach>
 
 <script>
     // Mở và đóng modal
@@ -279,44 +274,14 @@
     function closeModal(modalId) {
         document.getElementById(modalId).style.display = "none";
     }
-
-    // Hiển thị thông tin phim khi xem
-    function viewMovie(id) {
-        // Giả sử lấy thông tin phim từ server hoặc mảng dữ liệu
-        document.getElementById('viewMovieName').textContent = "Quỷ ăn tạng";
-        document.getElementById('viewCountry').textContent = "Thái Lan";
-        document.getElementById('viewDescription').textContent = "Tee yod, phim kinh dị của Thái Lan";
-        document.getElementById('viewDuration').textContent = "180m";
-        document.getElementById('viewReleaseDate').textContent = "10-04-2025";
-        document.getElementById('viewStatus').textContent = "Đang chiếu";
-        openModal('viewModal');
-    }
-
-    // Thêm phim mới
-    function addCustomer() {
-        openModal('addModal');
-    }
-
-    // Sửa phim
-    function editMovie(id) {
-        // Giả sử lấy thông tin phim từ server hoặc mảng dữ liệu
-        document.getElementById('editMovieName').value = "Quỷ ăn tạng";
-        document.getElementById('editCountry').value = "Thái Lan";
-        document.getElementById('editDescription').value = "Tee yod, phim kinh dị của Thái Lan";
-        document.getElementById('editDuration').value = "180m";
-        document.getElementById('editReleaseDate').value = "2025-04-10";
-        openModal('editModal');
-    }
-
-    // Xóa phim
-    function deleteMovie(id) {
-        openModal('deleteModal');
-    }
-
-    function confirmDelete() {
-        // Xử lý xóa phim
-        alert("Phim đã được xóa!");
-        closeModal('deleteModal');
+    function searchShowtimes() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const rows = document.getElementById('showtimeTableBody').getElementsByTagName('tr');
+        Array.from(rows).forEach(row => {
+            const cells = row.getElementsByTagName('td');
+            let matchFound = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(query));
+            row.style.display = matchFound ? '' : 'none';
+        });
     }
 </script>
 </body>

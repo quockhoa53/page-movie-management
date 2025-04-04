@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="css/customer.css">
+    <link rel="stylesheet" href="css/showtime.css">
 </head>
 <body>
 <div class="page-wrapper">
@@ -17,14 +18,17 @@
 </div>
 <div class="main-content">
     <div class="container">
-        <header>
+        <header class="d-flex justify-content-between align-items-center mb-4">
             <h1>Room Management</h1>
-        </header>
-        <div class="search-container">
-            <input type="text" placeholder="Search room..." id="searchInput" onkeyup="searchRooms()">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-room">
-                <i class="fas fa-plus"></i> Add New Room
+            <button class="btn btn-primary add-btn" data-bs-toggle="modal" data-bs-target="#add-room">
+                <i class="fas fa-plus me-2"></i>Add New Room
             </button>
+        </header>
+
+        <div class="d-flex justify-content-between mb-4">
+            <div class="search-container">
+                <input type="text" placeholder="Search movies..." id="searchInput" onkeyup="searchRooms()">
+            </div>
         </div>
         <table class="customer-table">
             <thead>

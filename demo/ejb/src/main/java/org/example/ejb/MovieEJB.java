@@ -1,5 +1,6 @@
 package org.example.ejb;
 
+
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionManagement;
 import jakarta.ejb.TransactionManagementType;
@@ -12,25 +13,38 @@ import java.util.List;
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class MovieEJB {
+
     @PersistenceContext(unitName = "cinema")
     private EntityManager em;
 
     public List<Movie> getAllMovies() {
-        List<Movie> Movies = em.createQuery("SELECT m FROM Movie m", Movie.class).getResultList();
-        System.out.println("Movies found: " + Movies.size());
-        return Movies;
+        return em.createQuery("SELECT m FROM Movie m", Movie.class).getResultList();
     }
 
-    public boolean deleteMovie(int MovieId) {
-        Movie Movie = em.find(Movie.class, MovieId);
-        if (Movie != null) {
-            em.remove(Movie);
-            return true;
+    public List<Movie> searchMoviesByName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return List.of();
         }
-        return false;
+        return em.createQuery("SELECT m FROM Movie m WHERE LOWER(m.movieName) LIKE LOWER(:name)", Movie.class)
+                .setParameter("name", "%" + name.trim() + "%")
+                .getResultList();
     }
 
-    public Movie getMovieById(Integer MovieId) {
-        return em.find(Movie.class, MovieId);
+    public void addMovie(Movie movie) {
+        em.persist(movie);
+    }
+
+    public void updateMovie(Movie movie) {
+        em.merge(movie);
+    }
+
+    public void deleteMovie(int movieId) {
+        Movie movie = em.find(Movie.class, movieId);
+        if (movie != null) {
+            em.remove(movie);
+        }
+    }
+    public Movie getMovieById(int movieId) {
+        return em.find(Movie.class, movieId);
     }
 }

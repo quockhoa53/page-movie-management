@@ -70,7 +70,7 @@
                                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#edit-${showtime.showtimeId}">
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
-                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteShowtime-${showtime.showtimeId}">
+                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteShowtimeModal">
                                         <i class="fas fa-trash"></i> Delete
                                     </button>
                                 </td>
